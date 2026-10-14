@@ -1,0 +1,51 @@
+site_name: TP Deep Learning, SE & IA
+site_description: Prise en main de PyTorch, baseline ResNet18 et data augmentation sur CIFAR-10
+site_url: https://bonben.github.io/ensta-tp-deep-learning/
+repo_url: https://github.com/bonben/ensta-tp-deep-learning
+edit_uri: ""
+docs_dir: docs
+
+nav:
+  - Accueil: index.md
+  - "0. Le serveur": 00_serveur.md
+  - "1. Prise en main de PyTorch": 01_pytorch.md
+  - "2. Votre baseline ResNet18": 02_baseline.md
+  - "3. Data augmentation": 03_data_augmentation.md
+  - Lecture d'articles: articles.md
+
+theme:
+  name: material
+  language: fr
+  features:
+    - content.code.copy
+    - navigation.footer
+    - navigation.top
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
