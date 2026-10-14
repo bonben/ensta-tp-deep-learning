@@ -8,17 +8,16 @@ réseau convolutif sur **CIFAR-10**, le jeu de données de tout le module
 
 ## Mise en place
 
-1. Sur la page du tutoriel, cliquez sur **Download Notebook**.
-2. Déposez le notebook dans votre dossier `tp_dl` sur le serveur (bouton **Upload**).
-3. Ouvrez-le et exécutez-le **cellule par cellule**, en lisant le texte entre les
-   cellules. Ne lancez pas tout d'un coup : l'intérêt est de comprendre chaque étape.
-
-!!! tip "Si la cellule du GPU plante sur `torch.accelerator`"
-    Votre version de PyTorch est plus ancienne que celle du tutoriel. Remplacez
-    la ligne par :
-    ```python
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    ```
+1. En haut de la page du tutoriel, cliquez sur **Run in Google Colab**, puis
+   *Fichier > Enregistrer une copie dans Drive*.
+2. Passez sur GPU : *Exécution > Modifier le type d'exécution > GPU T4*.
+3. **Avant tout le reste**, ajoutez une cellule tout en haut avec le
+   téléchargement rapide des données (voir la [partie 0](00_colab.md#les-donnees-toujours-la-copie-rapide))
+   et exécutez-la. Sinon, le tutoriel va chercher les données sur un serveur
+   très lent et reste bloqué.
+4. Exécutez ensuite le tutoriel **cellule par cellule**, en lisant le texte entre
+   les cellules. Ne lancez pas tout d'un coup : l'intérêt est de comprendre
+   chaque étape.
 
 ## Questions
 

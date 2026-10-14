@@ -3,13 +3,18 @@
 Vous allez entraîner un **ResNet18** sur CIFAR-10. C'est le réseau que vous
 compresserez pendant tout le reste du module.
 
-Deux fichiers (voir la [partie 0](00_serveur.md#recuperer-les-fichiers-du-tp)) :
+**[Ouvrir le notebook dans Colab](https://colab.research.google.com/github/bonben/ensta-tp-deep-learning/blob/main/docs/code/baseline.ipynb){ .md-button .md-button--primary }**
 
-- [`resnet.py`](code/resnet.py) : la **description du réseau**, fournie.
-  Lisez-la : vous y retrouverez les blocs résiduels vus en cours.
-- [`baseline.ipynb`](code/baseline.ipynb) : un **notebook à trous**. Chaque
-  cellule `TODO` est à écrire par vous. Juste après, une cellule
-  **Vérification** vous dit si votre code est juste : elle doit afficher `OK`.
+Puis, tout de suite : *Fichier > Enregistrer une copie dans Drive*, pour
+travailler sur **votre** copie. Et passez sur GPU (*Exécution > Modifier le type
+d'exécution > GPU T4*).
+
+- Le notebook est **à trous** : chaque cellule `TODO` est à écrire par vous.
+  Juste après, une cellule **Vérification** vous dit si votre code est juste :
+  elle doit afficher `OK`.
+- Sa première cellule télécharge les données et [`resnet.py`](code/resnet.py),
+  la **description du réseau**. Ouvrez ce fichier (panneau *Fichiers* à gauche)
+  et lisez-le : vous y retrouverez les blocs résiduels vus en cours.
 
 Ce que vous écrivez ici ressemble beaucoup au tutoriel de la
 [partie 1](01_pytorch.md). Gardez-le ouvert à côté : c'est votre meilleure aide.
@@ -108,8 +113,7 @@ s'améliore** :
 torch.save(model.state_dict(), "best.pt")
 ```
 
-Avec `EPOCHS = 2`, une époque doit prendre de quelques secondes à une minute selon
-la charge du serveur. Après 2 époques, on attend environ 45 à 60 % en validation.
+Avec `EPOCHS = 2`, comptez de l'ordre d'une minute par époque sur Colab. Après 2 époques, on attend environ 45 à 60 % en validation.
 
 ## 7. Les courbes
 
@@ -131,19 +135,13 @@ baseline sans la réentraîner.
 
 Documentation : [Saving and Loading Models](https://docs.pytorch.org/tutorials/beginner/saving_loading_models.html).
 
-## 9. L'entraînement long
+## 9. L'entraînement complet
 
-Une fois que tout marche avec 2 époques, on lance le vrai entraînement **dans le
-terminal**, pour qu'il continue même si vous fermez votre navigateur.
+Une fois que tout marche avec 2 époques :
 
-1. Dans le notebook, passez à `EPOCHS = 30` et enregistrez (Ctrl+S).
-2. Dans le terminal, dans le dossier `tp_dl` :
-
-```bash
-jupyter nbconvert --to script baseline.ipynb     # crée baseline.py
-nohup python baseline.py > train.log 2>&1 &      # lance en arrière-plan
-tail -f train.log                                # suivre (Ctrl+C arrête l'affichage, pas l'entraînement)
-```
+1. passez à `EPOCHS = 30` ;
+2. relancez tout : *Exécution > Tout exécuter* ;
+3. **gardez l'onglet ouvert** : comptez environ 20 à 30 minutes sur le GPU de Colab.
 
 !!! success "Résultat attendu"
     Environ **93 %** de précision en validation après 30 époques (et autour de 95 %
@@ -151,8 +149,10 @@ tail -f train.log                                # suivre (Ctrl+C arrête l'affi
     sont dans votre dossier.
 
 !!! warning "Gardez votre baseline"
-    Copiez `best.pt` en `baseline_resnet18.pt` quand l'entraînement est fini, et
-    notez sa précision. C'est votre point de référence pour tout le module.
+    Les fichiers de Colab disparaissent à la fin de la session : **téléchargez
+    `best.pt`** (panneau *Fichiers*, clic droit, *Télécharger*), renommez-le
+    `baseline_resnet18.pt` et notez sa précision. C'est votre point de référence
+    pour tout le module.
 
 ## Questions sur vos courbes
 
@@ -173,4 +173,4 @@ voit-il sur vos courbes, surtout à la fin ?
 
 ---
 
-Ensuite : la [partie 3](03_data_augmentation.md), après le cours sur la data augmentation.
+Ensuite : la [partie 3](03_data_augmentation.md).

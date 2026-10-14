@@ -7,7 +7,7 @@ docs_dir: docs
 
 nav:
   - Accueil: index.md
-  - "0. Le serveur": 00_serveur.md
+  - "0. Google Colab": 00_colab.md
   - "1. Prise en main de PyTorch": 01_pytorch.md
   - "2. Votre baseline ResNet18": 02_baseline.md
   - "3. Data augmentation": 03_data_augmentation.md

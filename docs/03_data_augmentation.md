@@ -1,12 +1,10 @@
 # 3. Data augmentation
 
-À faire **après le cours** sur la régularisation et la data augmentation, et à
-finir chez vous. Vous repartez de votre notebook de la partie 2.
+Vous repartez de votre notebook de la partie 2, en ajoutant des cellules à la suite.
 
-!!! warning "Partagez le GPU"
-    Les expériences de cette partie demandent plusieurs entraînements. Faites-les
-    **sur 15 époques**, une à la fois, et lancez les longues dans le terminal
-    comme à l'[étape 9](02_baseline.md#9-lentrainement-long).
+!!! tip "Gagnez du temps"
+    Les expériences de cette partie demandent plusieurs entraînements : faites-les
+    **sur 15 époques** (une dizaine de minutes chacune sur Colab).
 
 ## 3.1 Voir l'augmentation
 
