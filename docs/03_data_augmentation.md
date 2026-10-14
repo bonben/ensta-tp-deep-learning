@@ -22,10 +22,9 @@ Avant de mesurer l'effet d'une augmentation, regardez ce qu'elle fait aux images
     image de forme `(3, H, W)`. Pour l'afficher avec `plt.imshow`, les canaux
     doivent être en dernier : `.permute(1, 2, 0)`.
 
-Essayez ensuite d'autres transformations de
-[`torchvision.transforms`](https://docs.pytorch.org/vision/stable/transforms.html) :
-`ColorJitter`, `RandomRotation`, `RandomErasing` (à placer **après** `ToTensor`),
-`TrivialAugmentWide`… Lesquelles gardent une image reconnaissable ?
+Essayez ensuite d'autres transformations : `v2.ColorJitter(0.4, 0.4, 0.4)`,
+`v2.RandomRotation(15)`, `v2.RandomErasing()` (à placer **après** `v2.ToDtype`),
+`v2.TrivialAugmentWide()`. Lesquelles gardent une image reconnaissable ?
 
 ## 3.2 Avec ou sans augmentation ?
 
