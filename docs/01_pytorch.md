@@ -47,7 +47,20 @@ deux façons : à la main, couche par couche, puis avec PyTorch.
 
 **Q4. L'apprentissage.** Que font les trois lignes `optimizer.zero_grad()`,
 `loss.backward()` et `optimizer.step()` ? Que se passe-t-il si on supprime la
-première ? Essayez.
+première ? Essayez :
+
+1. mettez `optimizer.zero_grad()` en commentaire (`#` devant) ;
+2. relancez la cellule d'entraînement et regardez le **premier affichage** de la
+   perte (quelques secondes), puis interrompez la cellule (bouton carré) ;
+3. retirez le `#`, puis **réexécutez les cellules qui créent `net` et
+   `optimizer`** avant de relancer l'entraînement. Sinon, vous repartez d'un
+   réseau détruit par l'essai.
+
+??? success "Résultat attendu"
+    Avec `zero_grad`, la perte affichée descend : 2,2 puis 1,9 puis 1,7…
+    Sans `zero_grad`, elle explose dès le premier affichage : 43, puis 94, puis
+    185… (le hasard donnerait 2,3). Les gradients s'additionnent d'un batch à
+    l'autre au lieu d'être recalculés : les pas deviennent de plus en plus grands.
 
 **Q5. Le résultat.** Quelle précision obtenez-vous après 2 époques ? Quelles
 classes sont les mieux et les moins bien reconnues ? Pourquoi, d'après vous ?
