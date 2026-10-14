@@ -41,9 +41,6 @@ Trois ou quatre slides, qui répondent à ces questions :
    d'entraînement. C'est le fil rouge du module.
 4. **La question à creuser** du tableau.
 
-Déposez votre PDF dans le dossier partagé **la veille de votre séance** : les
-présentations s'enchaînent sur une seule machine.
-
 ## Comment lire un article
 
 On ne lit pas un article de recherche d'une traite, de la première à la dernière

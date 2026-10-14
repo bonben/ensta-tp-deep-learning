@@ -43,6 +43,20 @@ validation ? Où voit-on le **surapprentissage** ?
 **Q2.** L'augmentation rend-elle l'entraînement plus facile ou plus difficile ?
 Pourquoi est-ce une bonne chose ?
 
+??? success "Résultat attendu"
+    Mesuré avec les réglages du TP, sur 15 époques :
+
+    | | train | val | écart |
+    |---|---|---|---|
+    | sans augmentation | 100 % | 86 % | 14 points |
+    | avec augmentation | 95 % | 91 % | 4 points |
+
+    Sans augmentation, le réseau apprend **par cœur** les images d'entraînement
+    (100 % dès la 13ᵉ époque, perte quasi nulle) sans progresser autant en
+    validation : c'est le surapprentissage, visible dans l'écart entre les deux
+    courbes. Ne cherchez pas une perte de validation qui remonte nettement : le
+    scheduler, en faisant baisser le taux d'apprentissage, la masque en grande partie.
+
 ## 3.3 Votre propre augmentation
 
 Ajoutez une ou deux transformations de votre choix à la transformation
