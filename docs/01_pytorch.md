@@ -41,7 +41,7 @@ deux façons : à la main, couche par couche, puis avec PyTorch.
     `net.parameters()` renvoie tous les tenseurs de poids et de biais ; `p.numel()`
     donne le nombre d'éléments d'un tenseur `p`.
 
-!!! success "Résultat attendu"
+??? success "Résultat attendu"
     62 006 paramètres. Retenez l'ordre de grandeur : le ResNet18 de la partie 2
     en a 180 fois plus.
 
@@ -52,7 +52,7 @@ première ? Essayez.
 **Q5. Le résultat.** Quelle précision obtenez-vous après 2 époques ? Quelles
 classes sont les mieux et les moins bien reconnues ? Pourquoi, d'après vous ?
 
-!!! success "Résultat attendu"
+??? success "Résultat attendu"
     Autour de 50 à 55 %. Le hasard donnerait 10 %.
 
 ## Passer sur GPU
