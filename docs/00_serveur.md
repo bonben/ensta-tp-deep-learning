@@ -32,6 +32,19 @@ wget https://bonben.github.io/ensta-tp-deep-learning/code/resnet.py
 wget https://bonben.github.io/ensta-tp-deep-learning/code/baseline.ipynb
 ```
 
+Puis les données, CIFAR-10 (170 Mo). Ne passez pas par le téléchargement
+automatique de PyTorch, qui va chercher les données sur un serveur universitaire
+très lent : prenez cette copie.
+
+```bash
+wget https://github.com/bonben/ensta-tp-deep-learning/releases/download/cifar10/cifar-10-python.tar.gz
+mkdir -p data && tar xzf cifar-10-python.tar.gz -C data && rm cifar-10-python.tar.gz
+ls data/cifar-10-batches-py      # doit lister data_batch_1 à data_batch_5, test_batch, etc.
+```
+
+Vos notebooks doivent être **dans le dossier `tp_dl`** : ils cherchent les données
+dans `./data`, et PyTorch ne les retéléchargera pas puisqu'elles y sont déjà.
+
 !!! tip "Si `wget` échoue"
     Téléchargez les deux fichiers depuis votre navigateur
     ([resnet.py](code/resnet.py), [baseline.ipynb](code/baseline.ipynb)), puis
