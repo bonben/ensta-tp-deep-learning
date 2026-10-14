@@ -146,8 +146,9 @@ tail -f train.log                                # suivre (Ctrl+C arrête l'affi
 ```
 
 !!! success "Résultat attendu"
-    Environ **93 à 95 %** de précision en validation après 30 époques. À la fin,
-    `best.pt` et `curves.png` sont dans votre dossier.
+    Environ **93 %** de précision en validation après 30 époques (et autour de 95 %
+    si l'on entraîne beaucoup plus longtemps). À la fin, `best.pt` et `curves.png`
+    sont dans votre dossier.
 
 !!! warning "Gardez votre baseline"
     Copiez `best.pt` en `baseline_resnet18.pt` quand l'entraînement est fini, et

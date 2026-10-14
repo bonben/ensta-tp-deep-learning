@@ -7,7 +7,7 @@ Module **SE & IA**, partie *Efficient Deep Learning*.
 À la fin de ce TP, chaque binôme a **un ResNet18 entraîné sur CIFAR-10**, avec ses
 courbes d'apprentissage et ses poids sauvegardés.
 
-Ce modèle est votre **baseline** : 11 millions de paramètres, environ 95 % de
+Ce modèle est votre **baseline** : 11 millions de paramètres, environ 93 % de
 précision. Toute la suite du module consiste à le rendre plus petit et moins
 coûteux (quantification, élagage, factorisation, distillation) **en perdant le
 moins de précision possible**. Gardez-le précieusement.
