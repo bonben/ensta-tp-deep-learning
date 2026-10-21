@@ -34,9 +34,14 @@ Ce notebook n'a pas de trous : il **fonctionne tel quel** et entraîne votre bas
   affiche une ligne à recopier dans le tableau partagé ;
 - `plot(h1, h2, ...)` : superpose les courbes de validation de plusieurs essais.
 
-Le modèle se construit avec `resnet.py` : `ResNet(BasicBlock, [2, 2, 2, 2], width=64)` est
-votre ResNet18. `[2, 2, 2, 2]` est le nombre de blocs dans chacun des 4 étages, et `width`
-le nombre de FM du premier étage (puis 2×, 4×, 8×).
+**Le code du ResNet est dans le notebook** (cellule « Le réseau ») :
+`ResNet(BasicBlock, [2, 2, 2, 2], width=64)` est votre ResNet18. `[2, 2, 2, 2]` est le nombre
+de blocs dans chacun des 4 étages, et `width` le nombre de FM du premier étage (puis 2×, 4×, 8×).
+
+!!! warning "Après avoir modifié une classe"
+    **Réexécutez sa cellule, puis recréez le modèle** (`model = ...`). Un modèle déjà créé garde
+    l'ancien code : sinon, vous entraînez l'ancien réseau sans le savoir. Écrivez vos nouvelles
+    classes dans des cellules à vous, sous celle du réseau.
 
 ## Comment travailler
 
@@ -94,7 +99,7 @@ bruit d'une graine à l'autre.
 **Leviers** : la convolution séparable en profondeur ; les convolutions 1×1 groupées.
 
 **Par où commencer** : remplacez chaque convolution 3×3 des blocs par une convolution
-séparable. Deux classes suffisent :
+séparable. Deux classes suffisent, à coller dans une nouvelle cellule sous celle du réseau :
 
 ```python
 class SeparableConv2d(nn.Module):
@@ -130,9 +135,14 @@ model = ResNet(SepBasicBlock, [2, 2, 2, 2], width=64)
 Après factorisation, 85 % des paramètres sont dans les convolutions 1×1 : c'est là qu'il faut
 chercher la suite.
 
-**Pour aller plus loin** : ajoutez `groups=g` à la convolution 1×1 (paramètres divisés par
-$g$ ; il faut que $C_{in}$ et $C_{out}$ soient divisibles par $g$). Ou supprimez les
-convolutions 1×1 des raccourcis, qui pèsent 12 % du réseau factorisé.
+**Pour aller plus loin** :
+
+- ajoutez `groups=g` à la convolution 1×1 : ses paramètres sont divisés par $g$. Le nombre de
+  FM d'entrée et de sortie doit être divisible par $g$ : avec `width=32` (32, 64, 128, 256 FM),
+  `g` = 2, 4, 8, 16 ou 32 conviennent ; avec `width=16`, jusqu'à 16. Sinon, PyTorch s'arrête
+  sur une erreur qui mentionne `groups` ;
+- supprimez les convolutions 1×1 des raccourcis, qui pèsent 12 % du réseau factorisé :
+  c'est la marche 3 de la piste 5.
 
 ### Piste 3 : mettre le réseau à l'échelle
 
@@ -154,7 +164,7 @@ de plus en plus cher.
 
 **Une remarque** : les étages n'ont pas forcément besoin d'être aussi larges les uns que les
 autres. L'agent a gagné ses derniers paramètres en **élargissant le premier étage et en
-rétrécissant le dernier**. Pour l'essayer, il faut modifier `resnet.py`.
+rétrécissant le dernier**. Pour l'essayer, voyez la marche 2 de la piste 5.
 
 ### Piste 4 : régulariser et augmenter (cours 2)
 
@@ -182,10 +192,91 @@ validation pour savoir dans quel cas vous êtes.
 
 > *Peut-on faire mieux qu'un ResNet18 rétréci ?*
 
-Le réseau de l'agent n'est pas un ResNet18 : il n'a que **3 étages** (résolutions 32, 16 et
-8), des **raccourcis sans aucun paramètre** et l'activation **SiLU**. Lisez son code
-(`train.py`, classes `DSBlock` et `PadShort`), reprenez une idée à la fois dans `resnet.py`,
-et mesurez ce que chacune apporte.
+Le ResNet18 a été conçu pour ImageNet, des images de 224×224 ; vos images font 32×32. Le
+réseau de l'agent est construit autrement : **3 étages** au lieu de 4, des largeurs choisies
+étage par étage, des **raccourcis sans paramètre** et l'activation **SiLU**. Trois marches,
+**une à la fois**, en mesurant chacune. Partez de la piste 2 : il vous faut `SepBasicBlock`.
+
+**Marche 1 : changer l'activation.** Dans la cellule du réseau, remplacez les 3 `F.relu` par
+`F.silu` (une version « douce » de ReLU), réexécutez, recréez le modèle. Aucun paramètre de plus.
+Si vous utilisez `ResNet3` (marche 2), changez aussi le `F.relu` de son `forward`.
+
+**Marche 2 : 3 étages, largeurs au choix.** Les images de 32×32 passent à 16×16 puis 8×8 ; le
+quatrième étage du ResNet18 (4×4) est le plus coûteux. Cette classe a 3 étages, dont vous
+choisissez les largeurs :
+
+```python
+class ResNet3(nn.Module):
+    """3 étages (32×32, 16×16, 8×8), avec le nombre de FM de chaque étage au choix."""
+
+    def __init__(self, block, num_blocks, widths=(32, 48, 64), num_classes=10):
+        super().__init__()
+        self.in_planes = widths[0]
+        self.conv1 = nn.Conv2d(3, widths[0], kernel_size=3, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(widths[0])
+        self.layer1 = self._make_layer(block, widths[0], num_blocks[0], stride=1)
+        self.layer2 = self._make_layer(block, widths[1], num_blocks[1], stride=2)
+        self.layer3 = self._make_layer(block, widths[2], num_blocks[2], stride=2)
+        self.linear = nn.Linear(widths[2], num_classes)
+
+    _make_layer = ResNet._make_layer  # on réutilise celle du ResNet
+
+    def forward(self, x):
+        out = F.relu(self.bn1(self.conv1(x)))  # 32×32
+        out = self.layer1(out)                 # 32×32
+        out = self.layer2(out)                 # 16×16
+        out = self.layer3(out)                 # 8×8
+        out = F.adaptive_avg_pool2d(out, 1).flatten(1)
+        return self.linear(out)
+
+model = ResNet3(SepBasicBlock, [3, 4, 2], widths=(32, 48, 64))
+```
+
+**Marche 3 : un raccourci sans paramètre.** Quand un bloc change de résolution ou de nombre
+de FM, le raccourci est une convolution 1×1. On peut la remplacer par une moyenne 2×2 et des FM
+supplémentaires remplies de zéros (l'« option A » de l'article ResNet) :
+
+```python
+class PadShortcut(nn.Module):
+    """Raccourci sans paramètre : moyenne 2×2 si la résolution baisse, FM ajoutées remplies de zéros."""
+
+    def __init__(self, in_planes, planes, stride):
+        super().__init__()
+        self.stride = stride
+        self.extra = planes - in_planes  # nombre de FM à ajouter
+
+    def forward(self, x):
+        if self.stride > 1:
+            x = F.avg_pool2d(x, self.stride)
+        return F.pad(x, (0, 0, 0, 0, 0, self.extra))  # (W, H, FM) : ajoute self.extra FM nulles
+
+
+class SepPadBlock(SepBasicBlock):
+    def __init__(self, in_planes, planes, stride=1):
+        super().__init__(in_planes, planes, stride)
+        if stride != 1 or in_planes != planes:
+            self.shortcut = PadShortcut(in_planes, planes, stride)
+
+model = ResNet3(SepPadBlock, [3, 4, 2], widths=(32, 48, 64))
+```
+
+**Ce qu'on sait déjà** (15 époques, une graine) :
+
+| | paramètres | précision |
+|---|---:|---:|
+| ResNet18 factorisé, `width=16` (piste 2) | 98 794 | 84,4 % |
+| `ResNet3(SepBasicBlock, [3, 4, 2], widths=(32, 48, 64))` | 54 442 | 87,3 % |
+| idem avec `SepPadBlock` | 49 610 | 87,5 % |
+| idem avec SiLU | 49 610 | 87,1 % |
+
+Deux fois moins de paramètres que le ResNet18 factorisé, et 3 points de mieux : l'architecture
+compte. Sur 15 époques, entraînement (89 %) et validation (87 %) restent proches : ces réseaux
+n'ont **pas fini leur entraînement**. Chez l'agent, c'est à 200 époques que ce type de réseau
+passe 90 %, et c'est là que la SiLU l'a aidé ; sur 15 époques, elle ne change rien.
+
+Pour aller plus loin, le code complet de l'agent (`train.py`) est disponible : son bloc
+(`DSBlock`) n'a **qu'une** convolution séparable, avec une BatchNorm et une activation entre la
+3×3 et la 1×1.
 
 ---
 
