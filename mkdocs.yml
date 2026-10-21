@@ -11,7 +11,7 @@ nav:
   - "1. Prise en main de PyTorch": 01_pytorch.md
   - "2. Votre baseline ResNet18": 02_baseline.md
   - "3. Data augmentation": 03_data_augmentation.md
-  - "4. Factorisation et fil rouge": 04_factorisation.md
+  - "4. Le projet fil rouge": 04_fil_rouge.md
   - Lecture d'articles: articles.md
 
 theme:

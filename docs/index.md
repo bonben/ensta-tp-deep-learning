@@ -20,7 +20,7 @@ moins de précision possible**. Gardez-le précieusement.
 | [1. Prise en main de PyTorch](01_pytorch.md) | Le tutoriel officiel *Training a Classifier*, et quelques questions |
 | [2. Votre baseline](02_baseline.md) | Écrire vous-mêmes l'entraînement d'un ResNet18 |
 | [3. Data augmentation](03_data_augmentation.md) | Visualiser l'augmentation, mesurer son effet, mixup |
-| [4. Factorisation et fil rouge](04_factorisation.md) | Factoriser son ResNet18, puis chercher le plus petit réseau à 90 % |
+| [4. Le projet fil rouge](04_fil_rouge.md) | Le plus petit réseau à 90 % : des pistes à explorer en autonomie |
 
 On commence aujourd'hui et on avance à votre rythme : ce qui n'est pas fini
 aujourd'hui se poursuivra à la séance suivante.
