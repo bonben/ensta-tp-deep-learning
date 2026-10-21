@@ -189,12 +189,5 @@ et mesurez ce que chacune apporte.
 
 ---
 
-## En fin de séance
-
-Chaque binôme présente **en une minute** :
-
-1. sa piste et sa question ;
-2. son essai le plus intéressant (paramètres, précision) ;
-3. **une décision** prise, et ce qui l'a justifiée.
-
-Puis on trie le tableau de la promo par nombre de paramètres.
+Le projet continue aux séances suivantes : gardez votre notebook (il est dans votre Drive)
+et continuez à remplir le tableau.
