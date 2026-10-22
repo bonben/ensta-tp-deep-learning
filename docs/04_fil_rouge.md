@@ -209,7 +209,7 @@ choisissez les largeurs :
 class ResNet3(nn.Module):
     """3 étages (32×32, 16×16, 8×8), avec le nombre de FM de chaque étage au choix."""
 
-    def __init__(self, block, num_blocks, widths=(32, 48, 64), num_classes=10):
+    def __init__(self, block, num_blocks, widths=(16, 32, 64), num_classes=10):
         super().__init__()
         self.in_planes = widths[0]
         self.conv1 = nn.Conv2d(3, widths[0], kernel_size=3, padding=1, bias=False)
@@ -229,7 +229,7 @@ class ResNet3(nn.Module):
         out = F.adaptive_avg_pool2d(out, 1).flatten(1)
         return self.linear(out)
 
-model = ResNet3(SepBasicBlock, [3, 4, 2], widths=(32, 48, 64))
+model = ResNet3(SepBasicBlock, [2, 2, 2], widths=(16, 32, 64))
 ```
 
 **Marche 3 : un raccourci sans paramètre.** Quand un bloc change de résolution ou de nombre
@@ -257,26 +257,17 @@ class SepPadBlock(SepBasicBlock):
         if stride != 1 or in_planes != planes:
             self.shortcut = PadShortcut(in_planes, planes, stride)
 
-model = ResNet3(SepPadBlock, [3, 4, 2], widths=(32, 48, 64))
+model = ResNet3(SepPadBlock, [2, 2, 2], widths=(16, 32, 64))
 ```
 
-**Ce qu'on sait déjà** (15 époques, une graine) :
-
-| | paramètres | précision |
-|---|---:|---:|
-| ResNet18 factorisé, `width=16` (piste 2) | 98 794 | 84,4 % |
-| `ResNet3(SepBasicBlock, [3, 4, 2], widths=(32, 48, 64))` | 54 442 | 87,3 % |
-| idem avec `SepPadBlock` | 49 610 | 87,5 % |
-| idem avec SiLU | 49 610 | 87,1 % |
-
-Deux fois moins de paramètres que le ResNet18 factorisé, et 3 points de mieux : l'architecture
-compte. Sur 15 époques, entraînement (89 %) et validation (87 %) restent proches : ces réseaux
-n'ont **pas fini leur entraînement**. Chez l'agent, c'est à 200 époques que ce type de réseau
-passe 90 %, et c'est là que la SiLU l'a aidé ; sur 15 époques, elle ne change rien.
+**Ce qu'on sait déjà** : le ResNet18 factorisé à `width=16` (piste 2) a 98 794 paramètres et
+fait 84,4 % en 15 époques. Avec 3 étages et des largeurs bien choisies, on fait mieux avec moins :
+à vous de mesurer combien. Regardez l'écart entre entraînement et validation : si les deux
+restent proches et bas, le réseau n'a pas fini d'apprendre, et il lui faut plus d'époques.
 
 **Pour aller plus loin : le bloc de l'agent.** Il n'a **qu'une** convolution séparable par
 bloc (au lieu de deux dans `SepBasicBlock`), avec une BatchNorm et une activation entre la 3×3
-et la 1×1. Il utilise `PadShortcut` (marche 3) et `ResNet3` (marche 2) :
+et la 1×1. Il s'utilise avec `ResNet3` (marche 2) et `PadShortcut` (marche 3) :
 
 ```python
 class DSBlock(nn.Module):
@@ -296,13 +287,9 @@ class DSBlock(nn.Module):
         out = F.relu(self.bn1(self.depthwise(x)))
         out = self.bn2(self.pointwise(out))
         return F.relu(out + self.shortcut(x))
-
-
-model = ResNet3(DSBlock, [3, 4, 2], widths=(32, 48, 64))
 ```
 
-C'est exactement le réseau de l'agent : **25 322 paramètres**, 8 M de MAC. Il y ajoutait la
-SiLU (marche 1) et l'entraînait 200 époques, avec une recette un peu différente.
+Combien de blocs, et quelles largeurs ? C'est à vous de chercher.
 
 ---
 
