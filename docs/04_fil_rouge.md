@@ -9,7 +9,7 @@
 C'est un projet au long cours. Aujourd'hui, vous disposez de trois familles de techniques :
 la **recette d'entraînement** (cours 1), la **régularisation et l'augmentation** (cours 2) et la
 **factorisation** (cours 3). Chaque nouveau cours (quantification, élagage, distillation)
-ajoutera des leviers, et tous vos essais iront dans le même tableau.
+ajoutera des leviers.
 
 Deux points de repère :
 
@@ -31,7 +31,7 @@ Ce notebook n'a pas de trous : il **fonctionne tel quel** et entraîne votre bas
 - `count_params(model)` et `count_macs(model)` : la taille et le calcul d'un réseau ;
 - `fit(model, epochs, lr=0.1, weight_decay=5e-4, batch_size=128, label_smoothing=0.0, transform=..., seed=0, name=...)` :
   la recette de la baseline, dont **tous les réglages sont des arguments**. À la fin, il
-  affiche une ligne à recopier dans le tableau partagé ;
+  affiche un résumé de l'essai (paramètres, MAC, époques, précision) ;
 - `plot(h1, h2, ...)` : superpose les courbes de validation de plusieurs essais.
 
 **Le code du ResNet est dans le notebook** (cellule « Le réseau ») :
@@ -52,7 +52,7 @@ Faites comme un ingénieur, et comme l'agent quand il a bien travaillé :
 3. **Changez une seule chose à la fois**, par rapport à un essai de référence.
 4. **Comparez à budget égal** : le même nombre d'époques. 15 époques pour explorer, plus
    pour confirmer.
-5. **Notez tout** dans le tableau partagé, y compris les essais décevants : paramètres, MAC,
+5. **Notez tout** dans votre notebook, y compris les essais décevants : paramètres, MAC,
    époques, précision **au dernier epoch**.
 6. **Décidez** : garder ou jeter, et pourquoi. À moins d'un demi-point du seuil, relancez avec
    une autre graine (`seed=1`) avant de conclure.
@@ -280,5 +280,4 @@ Pour aller plus loin, le code complet de l'agent (`train.py`) est disponible : s
 
 ---
 
-Le projet continue aux séances suivantes : gardez votre notebook (il est dans votre Drive)
-et continuez à remplir le tableau.
+Le projet continue aux séances suivantes : gardez votre notebook, il est dans votre Drive.
