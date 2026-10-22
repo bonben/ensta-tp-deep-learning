@@ -267,7 +267,7 @@ restent proches et bas, le réseau n'a pas fini d'apprendre, et il lui faut plus
 
 **Pour aller plus loin : le bloc de l'agent.** Il n'a **qu'une** convolution séparable par
 bloc (au lieu de deux dans `SepBasicBlock`), avec une BatchNorm et une activation entre la 3×3
-et la 1×1. Il s'utilise avec `ResNet3` (marche 2) et `PadShortcut` (marche 3) :
+et la 1×1. Il utilise `PadShortcut` (marche 3) :
 
 ```python
 class DSBlock(nn.Module):
