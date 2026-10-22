@@ -274,9 +274,35 @@ compte. Sur 15 époques, entraînement (89 %) et validation (87 %) restent proch
 n'ont **pas fini leur entraînement**. Chez l'agent, c'est à 200 époques que ce type de réseau
 passe 90 %, et c'est là que la SiLU l'a aidé ; sur 15 époques, elle ne change rien.
 
-Pour aller plus loin, le code complet de l'agent (`train.py`) est disponible : son bloc
-(`DSBlock`) n'a **qu'une** convolution séparable, avec une BatchNorm et une activation entre la
-3×3 et la 1×1.
+**Pour aller plus loin : le bloc de l'agent.** Il n'a **qu'une** convolution séparable par
+bloc (au lieu de deux dans `SepBasicBlock`), avec une BatchNorm et une activation entre la 3×3
+et la 1×1. Il utilise `PadShortcut` (marche 3) et `ResNet3` (marche 2) :
+
+```python
+class DSBlock(nn.Module):
+    """Le bloc de l'agent : UNE convolution séparable, avec BatchNorm et activation entre la 3×3 et la 1×1."""
+
+    def __init__(self, in_planes, planes, stride=1):
+        super().__init__()
+        self.depthwise = nn.Conv2d(in_planes, in_planes, 3, stride=stride, padding=1, groups=in_planes, bias=False)
+        self.bn1 = nn.BatchNorm2d(in_planes)
+        self.pointwise = nn.Conv2d(in_planes, planes, 1, bias=False)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_planes != planes:
+            self.shortcut = PadShortcut(in_planes, planes, stride)  # marche 3
+
+    def forward(self, x):
+        out = F.relu(self.bn1(self.depthwise(x)))
+        out = self.bn2(self.pointwise(out))
+        return F.relu(out + self.shortcut(x))
+
+
+model = ResNet3(DSBlock, [3, 4, 2], widths=(32, 48, 64))
+```
+
+C'est exactement le réseau de l'agent : **25 322 paramètres**, 8 M de MAC. Il y ajoutait la
+SiLU (marche 1) et l'entraînait 200 époques, avec une recette un peu différente.
 
 ---
 
