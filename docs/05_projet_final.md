@@ -41,7 +41,7 @@ en kilo-octets. Un réseau de 371 658 paramètres en 32 bits pèse 1 452 Ko ; en
 
 ## La présentation du 20 novembre
 
-- **7 minutes par binôme**, puis 3 minutes de questions. Le temps est tenu.
+- **7 minutes par binôme**, puis 5 minutes de questions. Le temps est tenu.
 - Environ **5 slides** : le point de départ, la question et la méthode, les résultats (vos
   courbes), les conclusions et les limites.
 - Chacun présente **sur sa machine**.
