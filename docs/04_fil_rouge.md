@@ -1,4 +1,4 @@
-# 4. Le projet fil rouge
+# 4. Projet fil rouge : partie 1
 
 ## Le projet
 
