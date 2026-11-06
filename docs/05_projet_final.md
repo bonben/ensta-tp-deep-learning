@@ -18,33 +18,33 @@ grille ci-dessous.
 | [5b. Élagage](05b_elagage.md) | Combien de poids de votre réseau peut-on mettre à zéro ? | `amorce_elagage.ipynb` |
 | [5c. Quantification](05c_quantification.md) | Sur combien de bits peut-on écrire ses poids ? | `amorce_quantification.ipynb` |
 
-Chaque page fournit une **amorce** : un notebook qui fonctionne tel quel sur un réseau de
-démonstration, des repères mesurés et des pistes. Votre travail commence là où l'amorce s'arrête.
+Chaque page fournit une **amorce** (un notebook qui fonctionne tel quel sur un réseau de
+démonstration), des repères mesurés et des pistes.
 
-## Ce qu'on attend
+## Contenu demandé
 
-1. **Un point de départ chiffré** : votre réseau du fil rouge, ses paramètres, sa précision.
-   C'est votre référence : chaque résultat se compare à lui, **au même nombre d'époques**.
-2. **Une question précise**, et une prédiction écrite avant de lancer.
-3. **Au moins une courbe de compromis** : la précision en fonction de la taille (taux
-   d'élagage, nombre de bits, taille de l'élève…), et non un seul point.
-4. **Au moins deux réglages explorés**, une chose à la fois (température, réentraînement,
-   couches épargnées, élagage en plusieurs étapes…).
-5. **Des conclusions honnêtes** : ce qui marche, ce qui ne marche pas, les limites de vos
-   mesures, et ce que votre compression ferait gagner **vraiment** sur une carte embarquée.
+1. **Le réseau de départ** : votre réseau du fil rouge, son nombre de paramètres, sa précision.
+   Tous les résultats sont comparés à ce réseau, entraîné avec le même nombre d'époques.
+2. **La question étudiée**, et le résultat que vous en attendiez avant les mesures.
+3. **Au moins une courbe de compromis** : précision en fonction de la taille (taux d'élagage,
+   nombre de bits, taille de l'élève…), sur plusieurs points.
+4. **Au moins deux réglages explorés**, un paramètre modifié à la fois (température,
+   réentraînement, couches non compressées, élagage en plusieurs étapes…).
+5. **Les conclusions** : ce que montrent les mesures, leurs limites, et le gain attendu sur une
+   cible embarquée (mémoire, temps de calcul).
 
-Pour chaque essai, notez : paramètres (et paramètres **non nuls** pour l'élagage), nombre de
+Pour chaque essai, notez : paramètres (paramètres **non nuls** pour l'élagage), nombre de
 bits, **taille mémoire en Ko**, nombre d'époques, **précision au dernier epoch**.
 
-Pour comparer des techniques différentes, une même unité : **la taille mémoire des poids**,
-en kilo-octets. Un réseau de 371 658 paramètres en 32 bits pèse 1 452 Ko ; en 4 bits, 198 Ko.
+Pour comparer des techniques différentes, l'unité commune est **la taille mémoire des poids**,
+en kilo-octets. Un réseau de 371 658 paramètres pèse 1 452 Ko en 32 bits, 198 Ko en 4 bits.
 
 ## La présentation du 20 novembre
 
-- **7 minutes par binôme**, puis 5 minutes de questions. Le temps est tenu.
-- Environ **5 slides** : le point de départ, la question et la méthode, les résultats (vos
-  courbes), les conclusions et les limites.
-- Chacun présente **sur sa machine**.
+- **7 minutes par binôme**, puis 5 minutes de questions.
+- Environ **5 slides** : réseau de départ, question et méthode, résultats (courbes),
+  conclusions et limites.
+- Chaque binôme présente **sur sa machine**.
 - Pendant les présentations des autres, vous remplissez le **formulaire d'évaluation** en ligne
   (le lien sera donné en séance) : une réponse par binôme présenté, sauf le vôtre.
 
@@ -61,10 +61,8 @@ C'est la même pour l'enseignant et pour vous. Chaque critère est noté de 1 à
 | **5. Conclusions** | Ce qu'on retient, les limites, ce que ça donnerait sur une cible réelle. | Pas de conclusion, ou une conclusion que les résultats ne montrent pas. |
 | **6. Présentation** | Claire, dans le temps, réponses précises aux questions. | Confuse, hors du temps. |
 
-Le formulaire demande aussi, pour chaque binôme, **un point fort** et **une suggestion** :
-une phrase chacun, précise. « Bien » ou « rien à dire » ne compte pas.
+Le formulaire demande aussi, pour chaque binôme, **un point fort** et **une suggestion**, en
+une phrase chacun.
 
-!!! tip "Évaluer ses camarades"
-    Notez ce que vous avez vu, pas ce que vous imaginez. Un résultat négatif bien mesuré et bien
-    expliqué vaut mieux qu'un résultat spectaculaire sans référence : la grille récompense la
-    **démarche**, pas le chiffre final.
+La grille note la démarche et non la valeur du résultat : un résultat négatif correctement
+mesuré peut obtenir la note maximale.
