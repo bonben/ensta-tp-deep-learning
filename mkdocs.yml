@@ -14,7 +14,7 @@ nav:
   - "4. Le projet fil rouge": 04_fil_rouge.md
   - "5. Le projet final": 05_projet_final.md
   - "5a. Distillation": 05a_distillation.md
-  - "5b. Élagage": 05b_elagage.md
+  - "5b. Pruning": 05b_elagage.md
   - "5c. Quantification": 05c_quantification.md
   - Lecture d'articles: articles.md
 

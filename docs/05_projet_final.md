@@ -4,7 +4,7 @@
 ## La consigne
 
 !!! abstract "Objectif"
-    Choisissez **une** des trois techniques du cours 4 (**distillation**, **élagage** ou
+    Choisissez **une** des trois techniques du cours 4 (**distillation**, **pruning** ou
     **quantification**) et appliquez-la à **votre réseau du fil rouge**. Jusqu'où peut-on le
     compresser, et à quel prix en précision ?
 
@@ -14,8 +14,8 @@ grille ci-dessous.
 
 | Technique | La question | Amorce |
 |---|---|---|
-| [5a. Distillation](05a_distillation.md) | Un enseignant fait-il gagner de la précision à votre réseau, ou lui permet-il de rétrécir ? | `amorce_distillation.ipynb` |
-| [5b. Élagage](05b_elagage.md) | Combien de poids de votre réseau peut-on mettre à zéro ? | `amorce_elagage.ipynb` |
+| [5a. Distillation](05a_distillation.md) | Un teacher fait-il gagner de la précision à votre réseau, ou lui permet-il de rétrécir ? | `amorce_distillation.ipynb` |
+| [5b. Pruning](05b_elagage.md) | Combien de poids de votre réseau peut-on mettre à zéro ? | `amorce_elagage.ipynb` |
 | [5c. Quantification](05c_quantification.md) | Sur combien de bits peut-on écrire ses poids ? | `amorce_quantification.ipynb` |
 
 Chaque page fournit une **amorce** (un notebook qui fonctionne tel quel sur un réseau de
@@ -26,14 +26,14 @@ démonstration), des repères mesurés et des pistes.
 1. **Le réseau de départ** : votre réseau du fil rouge, son nombre de paramètres, sa précision.
    Tous les résultats sont comparés à ce réseau, entraîné avec le même nombre d'époques.
 2. **La question étudiée**, et le résultat que vous en attendiez avant les mesures.
-3. **Au moins une courbe de compromis** : précision en fonction de la taille (taux d'élagage,
-   nombre de bits, taille de l'élève…), sur plusieurs points.
+3. **Au moins une courbe de compromis** : précision en fonction de la taille (taux de pruning,
+   nombre de bits, taille du student…), sur plusieurs points.
 4. **Au moins deux réglages explorés**, un paramètre modifié à la fois (température,
-   réentraînement, couches non compressées, élagage en plusieurs étapes…).
+   fine-tuning, couches non compressées, pruning en plusieurs étapes…).
 5. **Les conclusions** : ce que montrent les mesures, leurs limites, et le gain attendu sur une
    cible embarquée (mémoire, temps de calcul).
 
-Pour chaque essai, notez : paramètres (paramètres **non nuls** pour l'élagage), nombre de
+Pour chaque essai, notez : paramètres (paramètres **non nuls** pour le pruning), nombre de
 bits, **taille mémoire en Ko**, nombre d'époques, **précision au dernier epoch**.
 
 Pour comparer des techniques différentes, l'unité commune est **la taille mémoire des poids**,

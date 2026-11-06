@@ -1,6 +1,6 @@
 # 5a. Distillation
 
-> *Un enseignant fait-il gagner de la précision à votre réseau, ou lui permet-il de rétrécir ?*
+> *Un teacher fait-il gagner de la précision à votre réseau, ou lui permet-il de rétrécir ?*
 
 ## L'amorce
 
@@ -10,7 +10,7 @@ Puis *Fichier > Enregistrer une copie dans Drive*, et *GPU T4*.
 
 Le notebook reprend la boîte à outils du fil rouge et y ajoute :
 
-- un **enseignant** déjà entraîné, téléchargé : un ResNet18 de largeur 32 (2,8 M paramètres,
+- un **teacher** déjà entraîné, téléchargé : un ResNet18 `width=32` (2,8 M paramètres,
   94,9 %, 200 époques) ;
 - `kd_loss(teacher, T=4.0, alpha=0.9)` : la perte de distillation de Hinton, à passer à `fit`
   par l'argument `loss_fn`.
@@ -20,8 +20,8 @@ student = ResNet(SepBasicBlock, [2, 2, 2, 2], width=32)
 h_kd = fit(student, epochs=15, loss_fn=kd_loss(teacher, T=4.0, alpha=0.9))
 ```
 
-L'élève apprend à reproduire les **sorties adoucies** de l'enseignant (softmax à température
-`T`) et, pour une part `1 - alpha`, les vraies étiquettes. **Seule la perte change** : même
+Le student apprend à reproduire les **soft labels** du teacher (softmax à température
+`T`) et, pour une part `1 - alpha`, les vrais labels. **Seule la perte change** : même
 architecture, même recette, même nombre d'époques que votre réseau de départ. C'est ce qui
 rend la comparaison honnête.
 
@@ -31,9 +31,9 @@ Remplacez le réseau de démonstration par le vôtre dans la cellule « Votre r�
 
 RTX 5090, 15 époques, `T = 4`, `alpha = 0.9`.
 
-Élève : ResNet18 factorisé, `width=32` (371 658 paramètres), avec l'enseignant de l'amorce.
+Student : ResNet18 factorisé, `width=32` (371 658 paramètres), avec le teacher de l'amorce.
 
-| Graine | Sans distillation | Avec distillation | Gain |
+| Seed | Sans distillation | Avec distillation | Gain |
 |---:|---:|---:|---:|
 | 0 | 89,1 % | 89,7 % | +0,6 |
 | 1 | 88,8 % | 89,8 % | +1,0 |
@@ -43,44 +43,44 @@ RTX 5090, 15 époques, `T = 4`, `alpha = 0.9`.
 | 5 | 88,5 % | 89,3 % | +0,8 |
 | **moyenne** | **88,8 %** | **89,7 %** | **+0,9** |
 
-L'élève `width=16` (98 794 paramètres) : 84,9 % sans, 85,6 % avec (une graine).
+Le student `width=16` (98 794 paramètres) : 84,9 % sans, 85,6 % avec (une seed).
 
-D'une graine à l'autre, la précision varie de 0,6 point, autant que le gain. Ce qui permet de
-conclure, c'est que le gain est là **à chaque graine**. **Ne concluez pas sur un seul essai.**
+D'une seed à l'autre, la précision varie de 0,6 point, autant que le gain. Ce qui permet de
+conclure, c'est que le gain est là **à chaque seed**. **Ne concluez pas sur un seul essai.**
 
-Chaque époque coûte un peu plus cher que sans distillation, car l'enseignant calcule aussi.
+Chaque époque coûte un peu plus cher que sans distillation, car le teacher calcule aussi.
 
-**Un meilleur enseignant ne fait pas un meilleur élève.** Trois enseignants, même élève,
-moyenne de 6 graines :
+**Un meilleur teacher ne fait pas un meilleur student.** Trois teachers, même student,
+moyenne de 6 seeds :
 
-| Enseignant | Paramètres | Sa précision | L'élève distillé |
+| Teacher | Paramètres | Sa précision | Le student distillé |
 |---|---:|---:|---:|
 | aucun | | | 88,8 % |
 | ResNet18, 30 époques | 11,2 M | 93,4 % | 89,4 % |
 | ResNet18, 200 époques | 11,2 M | **96,5 %** | 89,5 % |
 | ResNet18 `width=32`, 200 époques (celui de l'amorce) | 2,8 M | 94,9 % | **89,7 %** |
 
-Trois points de plus chez l'enseignant ne rapportent rien à l'élève. Le petit enseignant fait un
-peu mieux, mais l'écart (0,3 point) reste à la limite du bruit. Le gain de l'élève n'est pas
-mécaniquement lié à la précision de l'enseignant.
+Trois points de plus chez le teacher ne rapportent rien au student. Le petit teacher fait un
+peu mieux, mais l'écart (0,3 point) reste à la limite du bruit. Le gain du student n'est pas
+mécaniquement lié à la précision du teacher.
 
 ## Pistes
 
 Une question à la fois, toujours comparée à votre réseau entraîné **sans** distillation, au même
 nombre d'époques.
 
-- **La température** : `T` = 1, 2, 4, 8. À `T = 1`, les sorties de l'enseignant sont presque
-  aussi tranchées que les étiquettes : que reste-t-il du gain ?
-- **Le dosage** `alpha` : 0,5, 0,9, 1 (l'élève n'apprend plus que de l'enseignant).
-- **La taille de l'élève** : le gain est-il plus grand pour un petit élève ? La distillation
-  permet-elle de garder la précision de votre réseau avec un élève plus petit ?
+- **La température** : `T` = 1, 2, 4, 8. À `T = 1`, les sorties du teacher sont presque
+  aussi tranchées que les labels : que reste-t-il du gain ?
+- **Le dosage** `alpha` : 0,5, 0,9, 1 (le student n'apprend plus que du teacher).
+- **La taille du student** : le gain est-il plus grand pour un petit student ? La distillation
+  permet-elle de garder la précision de votre réseau avec un student plus petit ?
 - **Plus d'époques** : l'écart avec l'entraînement normal se maintient-il à 30 ou 60 époques ?
-- **Un autre enseignant** : votre meilleur réseau du fil rouge, ou un enseignant plus petit.
-  Le tableau ci-dessus montre qu'un enseignant plus précis ne fait pas forcément un meilleur élève.
+- **Un autre teacher** : votre meilleur réseau du fil rouge, ou un teacher plus petit.
+  Le tableau ci-dessus montre qu'un teacher plus précis ne fait pas forcément un meilleur student.
 
 ## Pièges
 
-- **Comparer à budget égal** : un élève distillé en 30 époques contre une référence de 15, ce
+- **Comparer à budget égal** : un student distillé en 30 époques contre une référence de 15, ce
   n'est pas la distillation que vous mesurez.
 - L'agent de la démonstration avait trouvé que la distillation **faisait perdre** de 0,7 à
   1,7 point à ses très petits réseaux. La distillation régularise : un réseau qui n'arrive déjà
@@ -88,6 +88,6 @@ nombre d'époques.
 
 ## À rapporter
 
-Paramètres, `T`, `alpha`, époques, graine, précision au dernier epoch, avec et sans distillation.
+Paramètres, `T`, `alpha`, époques, seed, précision au dernier epoch, avec et sans distillation.
 La taille mémoire ne change pas : votre gain se lit en **précision à taille égale**, ou en
 **taille à précision égale**.

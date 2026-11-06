@@ -9,7 +9,7 @@ courbes d'apprentissage et ses poids sauvegardés.
 
 Ce modèle est votre **baseline** : 11 millions de paramètres, environ 93 % de
 précision. Toute la suite du module consiste à le rendre plus petit et moins
-coûteux (quantification, élagage, factorisation, distillation) **en perdant le
+coûteux (quantification, pruning, factorisation, distillation) **en perdant le
 moins de précision possible**. Gardez-le précieusement.
 
 ## Le déroulé
@@ -21,7 +21,7 @@ moins de précision possible**. Gardez-le précieusement.
 | [2. Votre baseline](02_baseline.md) | Écrire vous-mêmes l'entraînement d'un ResNet18 |
 | [3. Data augmentation](03_data_augmentation.md) | Visualiser l'augmentation, mesurer son effet, mixup |
 | [4. Le projet fil rouge](04_fil_rouge.md) | Le plus petit réseau à 90 % : des pistes à explorer en autonomie |
-| [5. Le projet final](05_projet_final.md) | Distillation, élagage ou quantification de votre réseau : consigne, grille d'évaluation, amorces |
+| [5. Le projet final](05_projet_final.md) | Distillation, pruning ou quantification de votre réseau : consigne, grille d'évaluation, amorces |
 
 On commence aujourd'hui et on avance à votre rythme : ce qui n'est pas fini
 aujourd'hui se poursuivra à la séance suivante.
