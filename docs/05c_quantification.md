@@ -22,8 +22,23 @@ print(model_size_kb(q, 4), evaluate(q))
 h = fit(q, epochs=5, lr=0.01)          # fine-tuner en quantifiant
 ```
 
-Sur $b$ bits, chaque poids $w$ d'un filtre est remplacé par $s \cdot \mathrm{round}(w / s)$,
-avec $s = \max |w| / (2^{b-1} - 1)$ : il ne prend plus que $2^b - 1$ valeurs.
+Sur $b$ bits, chaque filtre a un **scaling factor** $s = \max |w| / (2^{b-1} - 1)$. Chaque
+poids devient un entier $w_q = \mathrm{round}(w / s)$, entre $-(2^{b-1}-1)$ et $2^{b-1}-1$, et
+sa valeur approchée est $\hat{w} = s \cdot w_q$ : $2^b - 1$ valeurs possibles.
+
+**Pourquoi un scaling factor par filtre permet de calculer en entiers.** Une sortie $j$ est une
+somme de produits sur les entrées $k$. Si les activations sont quantifiées avec un scaling
+factor $s_x$ et les poids du filtre $j$ avec $s_{w,j}$, aucun des deux ne dépend de $k$ : ils
+sortent de la somme.
+
+$$
+y_j = \sum_k x_k \, w_{kj} \approx \sum_k (s_x \, x_{q,k})(s_{w,j} \, w_{q,kj})
+= s_x \, s_{w,j} \sum_k x_{q,k} \, w_{q,kj}
+$$
+
+Les produits et la somme se font en entiers (8 bits, accumulateur 32 bits), puis une seule
+multiplication réelle par sortie. Un scaling factor qui varierait avec $k$ empêcherait de le
+sortir de la somme.
 
 Pour fine-tuner, l'arrondi pose un problème : sa dérivée est nulle presque partout. L'astuce
 (*straight-through estimator*) : dans le calcul, les poids sont quantifiés, mais le gradient
