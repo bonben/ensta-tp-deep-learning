@@ -46,7 +46,8 @@ en kilo-octets. Un réseau de 371 658 paramètres pèse 1 452 Ko en 32 bits, 198
   conclusions et limites.
 - Chaque binôme présente **sur sa machine**.
 - Pendant les présentations des autres, vous remplissez le **formulaire d'évaluation** en ligne
-  (le lien sera donné en séance) : une réponse par binôme présenté, sauf le vôtre.
+  (le lien sera donné en séance) : un seul formulaire pour toute la séance, avec une grille par
+  binôme, sauf le vôtre. Il s'envoie à la fin des présentations.
 
 ## La grille d'évaluation
 
@@ -61,8 +62,8 @@ C'est la même pour l'enseignant et pour vous. Chaque critère est noté de 1 à
 | **5. Conclusions** | Ce qu'on retient, les limites, ce que ça donnerait sur une cible réelle. | Pas de conclusion, ou une conclusion que les résultats ne montrent pas. |
 | **6. Présentation** | Claire, dans le temps, réponses précises aux questions. | Confuse, hors du temps. |
 
-Le formulaire demande aussi, pour chaque binôme, **un point fort** et **une suggestion**, en
-une phrase chacun.
+Pour chaque binôme, le formulaire propose aussi un champ facultatif : un point fort et une
+suggestion.
 
 La grille note la démarche et non la valeur du résultat : un résultat négatif correctement
 mesuré peut obtenir la note maximale.
