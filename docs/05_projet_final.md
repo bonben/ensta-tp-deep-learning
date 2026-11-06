@@ -1,6 +1,5 @@
 # 5. Projet fil rouge : partie 2
 
-
 ## La consigne
 
 !!! abstract "Objectif"
