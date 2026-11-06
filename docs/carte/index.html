@@ -419,13 +419,19 @@ function compareToAgent(r) {
   const A = anatomy(agentLayers(best90)), S = anatomy(r.layers || []);
   const am = meanAcc(SIBS[cfgKey(best90)]), hp = r.hp || {};
   const out = [];
+  const sibs = SIBS[cfgKey(best90)], accs = sibs.map(x => x.acc);
+  const aMin = Math.min(...accs), aMax = Math.max(...accs);
   const ratio = r.params / best90.params, dA = r.acc - am;
+  // dans la fourchette des seeds de l'agent : on ne peut pas départager
+  const tie = r.acc >= aMin && r.acc <= aMax;
   let verdict;
-  if (r.params <= best90.params && r.acc >= am) verdict = "plus petit et au moins aussi précis : à vérifier sur plusieurs seeds";
+  if (r.params <= best90.params && tie) verdict = "plus petit, et dans la fourchette des seeds de l'agent";
+  else if (r.params <= best90.params && r.acc > aMax) verdict = "plus petit et plus précis que toutes les seeds de l'agent : à confirmer sur plusieurs seeds";
   else if (r.params <= best90.params) verdict = "plus petit, mais moins précis";
-  else if (r.acc >= am) verdict = `plus précis, mais ${nf1(ratio)} fois plus gros`;
+  else if (tie) verdict = `${nf1(ratio)} fois plus gros, et dans la fourchette des seeds de l'agent`;
+  else if (r.acc > aMax) verdict = `plus précis, mais ${nf1(ratio)} fois plus gros`;
   else verdict = `${nf1(ratio)} fois plus gros et moins précis`;
-  out.push(`<b>Bilan :</b> ${fmt(r.params)} paramètres contre ${fmt(best90.params)} (×${nf1(ratio)}), ${sgn(dA)} point par rapport à ${pct(am)} : ${verdict}.`);
+  out.push(`<b>Bilan :</b> ${fmt(r.params)} paramètres contre ${fmt(best90.params)} (×${nf1(ratio)}), ${sgn(dA)} point par rapport à ${pct(am)}, moyenne de l'agent sur ${sibs.length} seeds : ${verdict}.`);
   if (!r.layers || !r.layers.length) return out;
   // profondeur et blocs
   let depth = `<b>Profondeur :</b> ${S.n} couches de convolution contre ${A.n}.`;
@@ -446,10 +452,10 @@ function compareToAgent(r) {
   if (ep != null && ep < 200) rec.push(`${ep} époques contre 200 (chez l'agent, passer de 50 à 200 époques a rapporté 2 points)`);
   if (hp.lr != null && hp.lr < 0.2) rec.push(`learning rate ${hp.lr} contre 0,2 (0,1 au lieu de 0,2 : −0,45 point chez l'agent)`);
   if (hp.label_smoothing != null && !hp.label_smoothing) rec.push("pas de label smoothing (l'agent : 0,1)");
-  rec.push("activation ReLU probable ; l'agent est passé à SiLU (+0,8 point sur un même réseau)");
+  rec.push("activation ReLU probable ; l'agent est passé à SiLU (+0,7 point sur un même réseau, moyenne de 4 seeds contre une)");
   if (hp.batch_size && hp.batch_size !== 256) rec.push(`batch ${hp.batch_size} contre 256`);
   out.push(`<b>Recette :</b> ${rec.join(" ; ")}.`);
-  out.push(`<b>Mesure :</b> une seed, contre 7 pour le réseau de l'agent. Sur ses réseaux, la précision varie d'environ 0,5 point d'une seed à l'autre : un écart plus petit ne permet pas de conclure.`);
+  out.push(`<b>Mesure :</b> votre précision vient d'une seed ; celle de l'agent est la moyenne de ${sibs.length} seeds, qui vont de ${pct(aMin)} à ${pct(aMax)}. Un écart à la moyenne plus petit que cette fourchette ne permet pas de conclure.`);
   const tE = r.summary && r.summary.sec_epoch ? r.summary.sec_epoch : (r.sec_epoch_5090 ? r.sec_epoch_5090 * t4 : null);
   if (tE && ep) out.push(`<b>Budget :</b> environ ${dur(tE * ep)} pour cet entraînement${r.summary && r.summary.sec_epoch ? " (mesuré chez vous)" : " (estimé sur T4)"} ; l'agent a dépensé ${dur(totalS)} sur une RTX 5090 pour trouver le sien, soit environ ${dur(totalS * t4)} sur T4.`);
   return out;
