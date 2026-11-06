@@ -16,6 +16,7 @@ nav:
   - "5a. Distillation": 05a_distillation.md
   - "5b. Pruning": 05b_elagage.md
   - "5c. Quantification": 05c_quantification.md
+  - "6. Carte des réseaux": 06_carte.md
   - Lecture d'articles: articles.md
 
 theme:

@@ -22,6 +22,7 @@ moins de précision possible**. Gardez-le précieusement.
 | [3. Data augmentation](03_data_augmentation.md) | Visualiser l'augmentation, mesurer son effet, mixup |
 | [4. Projet fil rouge : partie 1](04_fil_rouge.md) | Le plus petit réseau à 90 % : des pistes à explorer en autonomie |
 | [5. Projet fil rouge : partie 2](05_projet_final.md) | Distillation, pruning ou quantification de votre réseau : consigne, grille d'évaluation, amorces |
+| [6. Carte des réseaux](06_carte.md) | Vos meilleurs réseaux et ceux de l'agent, sur une même carte |
 
 On commence aujourd'hui et on avance à votre rythme : ce qui n'est pas fini
 aujourd'hui se poursuivra à la séance suivante.
