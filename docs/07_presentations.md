@@ -1,8 +1,34 @@
 # 7. Présentations du 20 novembre
 
-Présentations du projet fil rouge, partie 2 : le **vendredi 20 novembre**, devant toute la promo.
-Ce qu'il faut présenter (architecture, métrique, stratégie, résultats, conclusions) est décrit
-dans la consigne : [5. Projet fil rouge : partie 2](05_projet_final.md#contenu-demande).
+Présentations du projet fil rouge, partie 2, le **vendredi 20 novembre**, devant toute la promo :
+chaque binôme présente la compression de son réseau du fil rouge par une technique du cours 4
+(distillation, pruning ou quantification, combinaisons autorisées). La consigne et les amorces
+sont dans [5. Projet fil rouge : partie 2](05_projet_final.md).
+
+## Contenu demandé
+
+1. **L'architecture du réseau** : une description claire du réseau de départ, et du réseau
+   final s'il diffère. Blocs, nombre d'étages, largeurs (nombre de canaux), types de
+   convolution, nombre de paramètres. Un schéma est le plus lisible.
+2. **La métrique de taille** : choisissez ce que vous cherchez à réduire (nombre de paramètres,
+   paramètres non nuls, taille mémoire en Ko, MAC…) et expliquez pourquoi elle est pertinente
+   pour votre technique.
+3. **La stratégie** : les essais dans l'ordre où vous les avez faits, avec pour chacun ce qui a
+   changé, le résultat obtenu et la décision prise (garder, abandonner, et pourquoi).
+4. **Les résultats** : au moins une courbe de compromis, précision en fonction de votre
+   métrique, comparée au réseau de départ entraîné avec le même nombre d'époques.
+5. **Les conclusions** : ce qui a fait gagner le plus, ce qui n'a pas marché, les limites de vos
+   mesures.
+
+Facultatif :
+
+- **le budget de calcul** (nombre d'essais, époques, temps GPU) : apprécié ;
+- **l'intérêt sur une cible embarquée** (mémoire, temps de calcul, énergie).
+
+Pour chaque essai, notez : paramètres (paramètres **non nuls** pour le pruning), nombre de
+bits, taille mémoire en Ko, nombre d'époques, **précision au dernier epoch**.
+
+Repère : un réseau de 371 658 paramètres pèse 1 452 Ko en 32 bits, 198 Ko en 4 bits.
 
 ## Déroulé
 
